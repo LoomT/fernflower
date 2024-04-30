@@ -226,7 +226,7 @@ public class ClassWriter {
                        mt.hasModifier(CodeConstants.ACC_BRIDGE) && DecompilerContext.getOption(IFernflowerPreferences.REMOVE_BRIDGE) ||
                        wrapper.getHiddenMembers().contains(InterpreterUtil.makeUniqueKey(mt.getName(), mt.getDescriptor()));
         if (hide) continue;
-
+        System.out.println(mt.getName() + " | " + mt.getDescriptor());
         int position = buffer.length();
         int storedLine = startLine;
         if (hasContent) {
@@ -292,8 +292,25 @@ public class ClassWriter {
           return str.startsWith("return this." + name + "<invokedynamic>(this");
         }
       }
+      if(isDefaultConstructor(cl, mt) && code.countLines() == cl.getFields().size()) {
+        List<String> lines = code.toString().lines().map(String::trim).toList();
+        for(int i = 0; i < lines.size(); i++) {
+          String field = cl.getFields().get(i).getName();
+          if(!lines.get(i).equals("this." + field + " = " + field + ";")) return false;
+        }
+        System.out.println("default constructor found");
+        return true;
+      }
     }
+    System.out.println("Printing " + mt.getName() + " | " + mt.getDescriptor());
     return false;
+  }
+
+  private static boolean isDefaultConstructor(StructClass cl, StructMethod mt) {
+    if(!mt.getName().equals("<init>")) return false;
+    String canonicalConstructorDescriptor =
+      cl.getRecordComponents().stream().map(StructField::getDescriptor).collect(Collectors.joining("", "(", ")V"));
+    return mt.getDescriptor().equals(canonicalConstructorDescriptor);
   }
 
   private void writeClassDefinition(ClassNode node, TextBuffer buffer, int indent) {
