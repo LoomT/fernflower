@@ -294,7 +294,16 @@ public class ClassWriter {
       // print syntethic record constructor and getters if this option is off
       if(!DecompilerContext.getOption(IFernflowerPreferences.COMPACT_RECORD)) return false;
 
-      if(isDefaultConstructor(cl, mt) && code.countLines() == cl.getFields().size()) {
+      // check for annotations in the method
+      for (StructGeneralAttribute.Key<?> key : StructGeneralAttribute.ANNOTATION_ATTRIBUTES)
+        if (mt.hasAttribute(key)) return false;
+      for (StructGeneralAttribute.Key<?> key : StructGeneralAttribute.PARAMETER_ANNOTATION_ATTRIBUTES)
+        if(mt.hasAttribute(key)) return false;
+      for (StructGeneralAttribute.Key<?> key : StructGeneralAttribute.TYPE_ANNOTATION_ATTRIBUTES)
+        if(mt.hasAttribute(key)) return false;
+
+      // default canonical constructor
+      if(isCanonicalRecordConstructor(cl, mt) && code.countLines() == cl.getFields().size()) {
         List<String> lines = code.toString().lines().map(String::trim).toList();
         for(int i = 0; i < lines.size(); i++) {
           String field = cl.getFields().get(i).getName();
@@ -302,6 +311,7 @@ public class ClassWriter {
         }
         return true;
       }
+      // default record accessors
       if(cl.getRecordComponents().stream().map(StructRecordComponent::getName).anyMatch(name::equals)) {
         return code.toString().trim().equals("return this." + name + ";");
       }
@@ -309,7 +319,7 @@ public class ClassWriter {
     return false;
   }
 
-  private static boolean isDefaultConstructor(StructClass cl, StructMethod mt) {
+  private static boolean isCanonicalRecordConstructor(StructClass cl, StructMethod mt) {
     if(!mt.getName().equals("<init>")) return false;
     String canonicalConstructorDescriptor =
       cl.getRecordComponents().stream().map(StructField::getDescriptor).collect(Collectors.joining("", "(", ")V"));
