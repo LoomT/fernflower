@@ -68,6 +68,7 @@ The rest of options can be left as they are: they are aimed at professional reve
 - ind: indentation string (default is 3 spaces)
 - crp (0): use record patterns where it is possible
 - cps (0): use switch with patterns where it is possible 
+- crc (0): don't print synthetic record constructor and getters
 - log (INFO): a logging level, possible values are TRACE, INFO, WARN, ERROR
 
 ### Renaming identifiers

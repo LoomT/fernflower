@@ -291,6 +291,9 @@ public class ClassWriter {
           return str.startsWith("return this." + name + "<invokedynamic>(this");
         }
       }
+      // print syntethic record constructor and getters if this option is off
+      if(!DecompilerContext.getOption(IFernflowerPreferences.COMPACT_RECORD)) return false;
+
       if(isDefaultConstructor(cl, mt) && code.countLines() == cl.getFields().size()) {
         List<String> lines = code.toString().lines().map(String::trim).toList();
         for(int i = 0; i < lines.size(); i++) {
