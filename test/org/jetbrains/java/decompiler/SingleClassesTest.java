@@ -251,6 +251,12 @@ public class SingleClassesTest {
 
   @Test public void testSwitchOnStatic() { doTest("pkg/SwitchOnStatic"); }
 
+  @Test public void testCompactRecordEmpty() { doTest("records/crc/TestCompactRecordEmpty"); }
+
+  @Test public void testCompactRecordCustom() { doTest("records/crc/TestCompactRecordCustom"); }
+
+  @Test public void testCompactRecordOverride() { doTest("records/crc/TestCompactRecordOverride"); }
+
   private void doTest(String testFile, String... companionFiles) {
     var decompiler = fixture.getDecompiler();
 

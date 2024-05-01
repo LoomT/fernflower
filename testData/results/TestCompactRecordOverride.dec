@@ -1,0 +1,58 @@
+package crc;
+
+public record TestCompactRecordOverride(String abc, int num1, double num2) {
+   private static int num3;
+
+   public TestCompactRecordOverride(String abc, int num1, double num2) {
+      this.abc = abc;// 7
+      this.num1 = num1;// 8
+      this.num2 = num2;// 9
+      num3 = num1 + 1;// 10
+   }// 11
+
+   public int num1() {
+      return this.num1 + 1;// 18
+   }
+
+   public double num2() {
+      return this.num2 + (double)this.num1;// 22
+   }
+}
+
+class 'crc/TestCompactRecordOverride' {
+   method '<init> (Ljava/lang/String;ID)V' {
+      6      6
+      b      7
+      10      8
+      14      9
+      15      9
+      16      9
+      19      10
+   }
+
+   method 'num1 ()I' {
+      1      13
+      4      13
+      5      13
+      6      13
+   }
+
+   method 'num2 ()D' {
+      1      17
+      5      17
+      8      17
+      9      17
+      a      17
+   }
+}
+
+Lines mapping:
+7 <-> 7
+8 <-> 8
+9 <-> 9
+10 <-> 10
+11 <-> 11
+18 <-> 14
+22 <-> 18
+Not mapped:
+6

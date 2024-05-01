@@ -1,0 +1,34 @@
+package crc;
+
+public record TestCompactRecordCustom(int i, String s) {
+   public TestCompactRecordCustom() {
+      this(5, "yo");// 5
+   }// 6
+
+   public String string() {
+      String var10000 = this.s;
+      return var10000 + String.valueOf(this.i);// 9
+   }
+}
+
+class 'crc/TestCompactRecordCustom' {
+   method '<init> ()V' {
+      1      4
+      2      4
+      4      4
+      7      5
+   }
+
+   method 'string ()Ljava/lang/String;' {
+      1      8
+      5      9
+      8      9
+      b      9
+      10      9
+   }
+}
+
+Lines mapping:
+5 <-> 5
+6 <-> 6
+9 <-> 10
