@@ -226,7 +226,6 @@ public class ClassWriter {
                        mt.hasModifier(CodeConstants.ACC_BRIDGE) && DecompilerContext.getOption(IFernflowerPreferences.REMOVE_BRIDGE) ||
                        wrapper.getHiddenMembers().contains(InterpreterUtil.makeUniqueKey(mt.getName(), mt.getDescriptor()));
         if (hide) continue;
-        System.out.println(mt.getName() + " | " + mt.getDescriptor());
         int position = buffer.length();
         int storedLine = startLine;
         if (hasContent) {
@@ -298,11 +297,12 @@ public class ClassWriter {
           String field = cl.getFields().get(i).getName();
           if(!lines.get(i).equals("this." + field + " = " + field + ";")) return false;
         }
-        System.out.println("default constructor found");
         return true;
       }
+      if(cl.getRecordComponents().stream().map(StructRecordComponent::getName).anyMatch(name::equals)) {
+        return code.toString().trim().equals("return this." + name + ";");
+      }
     }
-    System.out.println("Printing " + mt.getName() + " | " + mt.getDescriptor());
     return false;
   }
 
