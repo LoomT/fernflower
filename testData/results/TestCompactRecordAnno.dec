@@ -1,0 +1,31 @@
+package crc;
+
+public record TestCompactRecordAnno(@RC @TA String abc) {
+   public TestCompactRecordAnno(@P String abc) {
+      this.abc = abc;// 7
+   }// 8
+
+   @M
+   public String abc() {
+      return this.abc;// 11
+   }
+}
+
+class 'crc/TestCompactRecordAnno' {
+   method '<init> (Ljava/lang/String;)V' {
+      6      4
+      9      5
+   }
+
+   method 'abc ()Ljava/lang/String;' {
+      1      9
+      4      9
+   }
+}
+
+Lines mapping:
+7 <-> 5
+8 <-> 6
+11 <-> 10
+Not mapped:
+6

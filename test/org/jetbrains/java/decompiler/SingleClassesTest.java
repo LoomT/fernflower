@@ -263,6 +263,10 @@ public class SingleClassesTest {
     DecompilerContext.setProperty(IFernflowerPreferences.COMPACT_RECORD, "1");
     doTest("records/crc/TestCompactRecordOverride");
   }
+  @Test public void testCompactRecordAnno() {
+    DecompilerContext.setProperty(IFernflowerPreferences.COMPACT_RECORD, "1");
+    doTest("records/crc/TestCompactRecordAnno");
+  }
 
   private void doTest(String testFile, String... companionFiles) {
     var decompiler = fixture.getDecompiler();
